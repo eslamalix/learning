@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace AsyncBreakfast
@@ -8,6 +9,9 @@ namespace AsyncBreakfast
     {
         static async Task Main(string[] args)
         {
+            var watch = new Stopwatch();
+            watch.Start();
+            //
             Coffee cup = PourCoffee();
             Console.WriteLine("coffee is ready");
     
@@ -22,19 +26,24 @@ namespace AsyncBreakfast
                 if (finishedTask == eggsTask)
                 {
                     Console.WriteLine("\neggs are ready");
+                    Console.WriteLine($" ElapsedMilliseconds : {watch.ElapsedMilliseconds}ms");
                 }
                 else if (finishedTask == baconTask)
                 {
                     Console.WriteLine("\nbacon is ready");
+                    Console.WriteLine($" ElapsedMilliseconds : {watch.ElapsedMilliseconds}ms");
                 }
                 else if (finishedTask == toastTask)
                 {
                     Console.WriteLine("\ntoast is ready");
+                    Console.WriteLine($" ElapsedMilliseconds : {watch.ElapsedMilliseconds}ms");
                 }
                 breakfastTasks.Remove(finishedTask);
             }
 
 
+
+            Console.WriteLine($" ElapsedMilliseconds : {watch.ElapsedMilliseconds}ms");
 
             //Coffee cup = PourCoffee();
             //Console.WriteLine("coffee is ready");
@@ -46,14 +55,14 @@ namespace AsyncBreakfast
             //Bacon bacon = await FryBaconAsync(3);
             //Console.WriteLine("bacon is ready");
             //Console.WriteLine("3");
-     
+
 
             //Toast toast = await ToastBreadAsync(2);
             //ApplyButter(toast);
             //ApplyJam(toast);
             //Console.WriteLine("toast is ready");
             //Console.WriteLine("4");
-    
+
 
             //Juice oj = PourOJ();
             //Console.WriteLine("oj is ready");
@@ -70,7 +79,7 @@ namespace AsyncBreakfast
             return toast;
         }
 
-        private static Juice PourOj()
+        private static Juice PourOJ()
         {
             Console.WriteLine("Pouring orange juice");
             return new Juice();
