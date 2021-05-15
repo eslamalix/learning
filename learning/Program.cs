@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AsyncBreakfast
@@ -9,6 +11,7 @@ namespace AsyncBreakfast
     {
         static async Task Main(string[] args)
         {
+           // solution(15958);
             var watch = new Stopwatch();
             watch.Start();
             //
@@ -40,9 +43,10 @@ namespace AsyncBreakfast
                 }
                 breakfastTasks.Remove(finishedTask);
             }
+            Console.WriteLine($" ElapsedMilliseconds : {watch.ElapsedMilliseconds}ms");
 
-
-
+            Console.WriteLine($" .NET count : {await GetDotNetCount()}");
+            
             Console.WriteLine($" ElapsedMilliseconds : {watch.ElapsedMilliseconds}ms");
 
             //Coffee cup = PourCoffee();
@@ -51,23 +55,28 @@ namespace AsyncBreakfast
             //Egg eggs = await FryEggsAsync(2);
             //Console.WriteLine("eggs are ready");
             //Console.WriteLine("2");
-
             //Bacon bacon = await FryBaconAsync(3);
             //Console.WriteLine("bacon is ready");
             //Console.WriteLine("3");
-
-
             //Toast toast = await ToastBreadAsync(2);
             //ApplyButter(toast);
             //ApplyJam(toast);
             //Console.WriteLine("toast is ready");
             //Console.WriteLine("4");
-
-
             //Juice oj = PourOJ();
             //Console.WriteLine("oj is ready");
             //Console.WriteLine("Breakfast is ready!");
             //Console.WriteLine("5");
+        }
+        private static readonly HttpClient HttpClient = new HttpClient();
+
+        public static async Task<int> GetDotNetCount()
+        {
+            // Suspends GetDotNetCount() to allow the caller (the web server)
+            // to accept another request, rather than blocking on this one.
+            var html = await HttpClient.GetStringAsync("https://dotnetfoundation.org");
+
+            return Regex.Matches(html, @"\.NET").Count;
         }
 
         static async Task<Toast> MakeToastWithButterAndJamAsync(int number)
@@ -142,7 +151,59 @@ namespace AsyncBreakfast
             Console.WriteLine("Pouring coffee");
             return new Coffee();
         }
+        public static int solution(int N) {
+            // write your code in C# 6.0 with .NET 4.5 (Mono)
+            var NumToString = N.ToString();
+            List<int> index = new List<int>();
+            List<string> sAfterRemove = new List<string>();
+            List<int> nAfterRemove = new List<int>();
+            for(int i = 0; i < NumToString.Length; i++){
+                if(NumToString[i]=='5'){
+                    index.Add(i);
+                }
+
+            }
+        
+            //adding values to compare later which is larger 
+            for(int i = 0; i < index.Count; i++){
+                sAfterRemove.Add(NumToString.Remove(index[i],1));
+            }
+       
+            foreach(var x in sAfterRemove){
+                nAfterRemove.Add(int.Parse(x));
+            }
+         
+            int finalNum = 0;
+            Console.WriteLine(" here is index "+nAfterRemove.Count);
+
+            for(int i = 0; i < nAfterRemove.Count; i++){
+                Console.WriteLine(" here is i "+i);
+
+            
+                Console.WriteLine(" here is num "+nAfterRemove[i]);
+                Console.WriteLine(" here is finalNum "+finalNum);
+
+                if(i+1==nAfterRemove.Count){
+                    if(finalNum <nAfterRemove[i]){
+                        finalNum = nAfterRemove[i];
+                        Console.WriteLine(" here is finalNum  again"+finalNum);
+                    }
+                    break;
+                };
+                finalNum = nAfterRemove[i ];
+                if(finalNum <nAfterRemove[i+1]){
+                    finalNum = nAfterRemove[i+1];
+                }
+                Console.WriteLine(" here is finalNum  again"+finalNum);
+            }
+
+            return finalNum ;
+        }
+
     }
+   
+    
+
     internal class Juice
     {
     }
